@@ -138,7 +138,3 @@ Opens GTKWave GUI for signal visualization
 - **Throughput:** One output sample per 128 input samples
 - **Precision:** 50-bit output data path
 
-## 🔗 References
-
-- 
-- 
