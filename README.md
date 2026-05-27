@@ -12,6 +12,39 @@ Total decimation factor: **Rtotal = 128**
 
 ## 📁 Project Structure
 
+```text
+Sigma-Delta-ADC-Decimation-Filter/
+│
+├── rtl/
+│   ├── decimation_filter.v
+│   ├── cic_filter.v
+│   ├── fir_filter.v
+│   └── halfband_filter.v
+│
+├── tb/
+│   └── tb_decimation_filter.v
+│
+├── coeffs/
+│   ├── fir_coeffs.mem
+│   ├── hb1_coeffs.mem
+│   └── hb2_coeffs.mem
+│
+├── sim/
+│   ├── build/
+│   │   └── filter.out
+│   │
+│   ├── test_files/
+│   │   ├── modulator_output1.txt
+│   │   ├── modulator_output2.txt
+│   │   ├── modulator_output3.txt
+│   │   └── output_filters.txt
+│   │
+│   └── waveforms/
+│       └── wave_decimation_filter.vcd
+│
+└── README.md
+```
+
 ### RTL & Testbench Files
 - `decimation_filter.v` - Top-level module integrating all filter stages
 - `cic_filter.v` - Stage 1: Cascaded Integrator-Comb filter for coarse decimation
@@ -88,7 +121,7 @@ The testbench defaults to `modulator_output1.txt`. To use alternate inputs:
 3. Update the filename:
 ```verilog
 // Example change:
-input_file = $fopen("modulator_output2.txt", "r");
+input_file = $fopen("sim/test_files/modulator_output2.txt", "r");
 ```
 
 
@@ -96,19 +129,19 @@ input_file = $fopen("modulator_output2.txt", "r");
 
 **1. Compile the design:**
 ```bash
-iverilog -o filters.out *.v
+iverilog -o sim/build/filter.out rtl/*.v tb/tb_decimation_filter.v
 ```
 Compiles all Verilog source files into `filters.out` executable
 
 **2. Run simulation:**
 ```bash
-vvp ./filters.out
+vvp sim/build/filter.out
 ```
 Executes the simulation and displays progress, sample counts, and results
 
 **3. View waveforms:**
 ```bash
-gtkwave ./wave_decimation_filter.vcd
+gtkwave sim/waveforms/wave_decimation_filter.vcd
 ```
 Opens GTKWave GUI for signal visualization
 
@@ -133,7 +166,7 @@ Opens GTKWave GUI for signal visualization
 ## 📈 Performance Characteristics
 
 - **Total Decimation Ratio:** 128
-- **Input:** 1-bit Delta-Sigma modulator stream
+- **Input:** Multi-bit Delta-Sigma modulator stream
 - **Output:** High-resolution PCM samples
 - **Throughput:** One output sample per 128 input samples
 - **Precision:** 50-bit output data path
